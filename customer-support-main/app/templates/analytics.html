@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics{% endblock %}
+{% block header %}Platform Analytics{% endblock %}
+
+{% block content %}
+<div class="content-row">
+    <div class="card">
+        <h3>Tickets by Category</h3>
+        <ul style="list-style: none; padding-top: 1rem;">
+            {% for cat, count in stats.categories.items() %}
+            <li style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                <span>{{ cat }}</span>
+                <span style="font-weight: 600;">{{ count }}</span>
+            </li>
+            {% else %}
+            <li>No data available</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="card">
+        <h3>Tickets by Sentiment</h3>
+        <ul style="list-style: none; padding-top: 1rem;">
+            {% for sent, count in stats.sentiments.items() %}
+            <li style="display: flex; justify-content: space-between; padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+                <span>
+                    <span class="badge" style="
+                        {% if sent == 'Positive' %}color: var(--success-text);{% endif %}
+                        {% if sent == 'Negative' %}color: var(--danger-color);{% endif %}
+                    ">{{ sent }}</span>
+                </span>
+                <span style="font-weight: 600;">{{ count }}</span>
+            </li>
+            {% else %}
+            <li>No data available</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Overview Metrics</h3>
+    <div class="stats-row" style="margin-bottom: 0; padding-top: 1rem;">
+        <div class="stat-card" style="border: none; padding: 0;">
+            <span class="stat-title">Total Processed</span>
+            <span class="stat-value">{{ stats.total }}</span>
+        </div>
+        <div class="stat-card" style="border: none; padding: 0;">
+            <span class="stat-title">AI Resolution Rate</span>
+            <span class="stat-value">68%</span>
+        </div>
+        <div class="stat-card" style="border: none; padding: 0;">
+            <span class="stat-title">Customer Satisfaction</span>
+            <span class="stat-value">4.8/5</span>
+        </div>
+    </div>
+</div>
+{% endblock %}
