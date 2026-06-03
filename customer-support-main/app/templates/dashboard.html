@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Analytics Cards -->
+<div class="stats-row">
+    <div class="stat-card">
+        <span class="stat-title">Total Tickets</span>
+        <span class="stat-value">{{ tickets|length }}</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-title">Resolved</span>
+        <span class="stat-value">12</span>
+    </div>
+    <div class="stat-card">
+        <span class="stat-title">Avg Response Time</span>
+        <span class="stat-value">2m 40s</span>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="content-row">
+    <!-- Ticket Submission -->
+    <div class="card submit-ticket-card">
+        <h3>Submit New Ticket</h3>
+        <form id="ticket-form">
+            <div class="form-group">
+                <label for="ticket-text">Describe your issue</label>
+                <textarea id="ticket-text" rows="5" placeholder="I am having trouble with..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submit-btn">Analyze Ticket</button>
+        </form>
+    </div>
+
+    <!-- Prediction Results -->
+    <div class="card results-card" id="results-container" style="display: none;">
+        <h3>AI Analysis Results</h3>
+        
+        <div class="result-group">
+            <label>Category</label>
+            <div class="badge" id="res-category">-</div>
+        </div>
+        
+        <div class="result-group">
+            <label>Sentiment</label>
+            <div class="badge" id="res-sentiment">-</div>
+        </div>
+
+        <div class="result-group">
+            <label>Extracted Summary</label>
+            <p class="summary-text" id="res-summary">-</p>
+        </div>
+
+        <div class="result-group">
+            <label>Suggested Auto-Reply</label>
+            <div class="reply-box" id="res-reply">-</div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Tickets -->
+<div class="card recent-tickets">
+    <h3>Recent Tickets</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Ticket</th>
+                <th>Category</th>
+                <th>Sentiment</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets[:5] %}
+            <tr>
+                <td class="truncate" title="{{ ticket.text }}">{{ ticket.text }}</td>
+                <td><span class="badge">{{ ticket.category }}</span></td>
+                <td><span class="badge">{{ ticket.sentiment }}</span></td>
+                <td>{{ ticket.created_at.strftime('%Y-%m-%d') }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4">No tickets found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
